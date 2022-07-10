@@ -1,0 +1,4 @@
+ldw_ztb2_tenderCategory.yaml    ---ops招投标2.0-招标类别接口用例
+ldw_ztb2_varietyCategory.yaml   ---ops招投标2.0-品种管理接口用例
+ldw_ztb2_appMyBidTender.yaml    ---APP招投标2.0-招投标列表
+ldw_ztb2_tenderManage.yaml      ---portal招标会列表、app招投标2.0-我的投标项目

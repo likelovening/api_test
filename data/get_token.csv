@@ -1,0 +1,3 @@
+name:username:password:TenantId:extract:code
+获取ops_token:ceshi123:${read_configyaml(password,ops_password)}:ldw:ops_token:200
+获取mer_token:11:${read_configyaml(password,mer_password)}:mer:mer_token:200

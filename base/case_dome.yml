@@ -1,0 +1,22 @@
+casedata_name:
+  -   #必须使用list格式
+    name: $ddt{name}
+    csvdatapath:   #需要csv数据驱动添加csvdatapath
+      name-username: filepath
+    request:
+      method: post
+      url: /ldw-auth/v1/oauth/login
+      data:
+        username: $ddt{username}
+        password: ${read_configyaml(password,ops_password)}
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+    extract:      #需要提取数据添加extract
+      extract_data: '"extract_data":"(.*?)"'
+    validate:
+      - equals:   #绝对断言
+          code: 200
+          success: true
+          msg: 登录成功
+      - contains: data    #包含断言
+      - contains: accessToken

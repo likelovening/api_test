@@ -1,0 +1,27 @@
+#获取token
+get_token:
+  -
+    name: $ddt{name}
+    csvdatapath:
+      name-username-password-TenantId-extract-code: data/get_token.csv
+    request:
+      method: post
+      url: /ldw-auth/v1/oauth/login
+      data:
+        grant_type: password
+        username: $ddt{username}
+        password: $ddt{password}
+      headers:
+        Content-Type: application/x-www-form-urlencoded
+        Authorization: ${read_configyaml(sstoken,Authorization)}
+        Tenant-Id: $ddt{TenantId}
+    extract:
+      $ddt{extract}: '"accessToken":"(.*?)"'
+    validate:
+      - equals:
+          code: $ddt{code}
+          success: true
+          msg: 登录成功
+      - contains:
+        - data
+        - accessToken

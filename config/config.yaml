@@ -1,0 +1,19 @@
+#存基础url、数据库连接信息；
+#by:your old brother
+#基础url
+base_url:
+
+#logger信息：
+logger:
+  name: "LDW"
+  level: "INFO"
+  format: '[%(asctime)s] %(filename)s->%(funcName)s line:%(lineno)d [%(levelname)s] %(message)s'
+#获取token值password
+
+#提取值位数设置,默认取首个值
+extract:
+  num: 1
+
+#public key
+sstoken:
+  Authorization:
