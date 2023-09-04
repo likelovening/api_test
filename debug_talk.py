@@ -188,6 +188,7 @@ class DebugTalk:
         cursor.close()
         db.close()
         return self.weightNum[0]
+
     # 选择所有数据的前几个以str输出
     def output_str(self, data_name, num):
         num=int(num)
