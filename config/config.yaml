@@ -1,7 +1,18 @@
 #存基础url、数据库连接信息；
 #by:your old brother
 #基础url
+EnvironMent:
+#  Chose: yyy
+  Chose: xxx
 base_url:
+  stg_mer_url: 'xxx'
+  stg_ops_url: 'xxx'
+  test_ops_url: "xxx"
+  test_mer_url: "xxx"
+  evd_ops_url: 'xxx'
+  evd_mer_url: 'xxx'
+  mock_url: 'xx'
+
 
 #logger信息：
 logger:
@@ -17,3 +28,14 @@ extract:
 #public key
 sstoken:
   Authorization:
+
+#new contract
+ContainerList:
+  containerModel: 20GP
+  containerFh: 15413
+  containerWeight: 28
+  shippingCompany: "船公司"
+  fromAddress: "起始地"
+  toAddress: "到货地"
+  departureTime: "2022-6-9"
+  arrivalTime: ""

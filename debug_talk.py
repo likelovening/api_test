@@ -6,12 +6,22 @@ by:your old brother
 """
 import random, json, datetime,pymysql
 from common.yaml_util import YamlReader, YamlWrite
-import os, base64
+import os, base64,requests
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5 as pks
+from urllib.parse import quote_plus
+from pathlib import Path
 
 
 class DebugTalk:
+    #Url加密
+    def Url_encoded(self,str):
+        Category=quote_plus(str)
+        return Category
+    #Url解密
+    def Url_decoded(self,str_incoded):
+        return requests.utils.quote(str_incoded)
+
     # 读取txt文件
     def read_fairmeeting_notice(self, name):
         name = name.encode('utf-8').decode("unicode_escape")
@@ -62,7 +72,7 @@ class DebugTalk:
         #测试环境加密
         publickey_path = debugtalk.get_Path('data/RSA_publickey.pem')
         # 生产环境密码加密
-        #publickey_path = debugtalk.get_Path('data/RSA_publickey(dev).pem')
+        # publickey_path = debugtalk.get_Path('data/RSA_publickey(dev).pem')
         with open(publickey_path, 'rb')as f:
             publickey = f.read()
         key = RSA.importKey(publickey)
@@ -93,12 +103,21 @@ class DebugTalk:
     # 获取项目根目录路径
     def get_Path(self, path):
         """
-        若项目路径修改，请同步修改写死的路径即：ldw_apitest
+        parts的判断是层级的判断，本地层级小的修改方法类
         """
-        curpath = os.path.dirname(os.path.realpath(__file__))
-        rootpath = curpath[:curpath.find("ldw_apitest") + len("ldw_apitest\\")]
-        dataPath = os.path.join(rootpath, path)
-        return dataPath
+        try:
+            curpath = os.path.dirname(os.path.realpath(__file__))
+            #获取文件绝对路径
+            current_file = Path(__file__).resolve()
+            #切片文件路径并存到list中
+            parts=current_file.parts
+            for num_length in range(len(parts)):
+                content_path=curpath[:curpath.find(parts[num_length]) + len(parts[num_length])]
+                actual_path=os.path.join(str(content_path), path)
+                if os.path.exists(actual_path):
+                    return actual_path if current_file.is_absolute() else None
+        except:
+            IOError("路径获取错误")
 
     # 根据保证金比例获取首次保证金支付金额
     def pay_payBondScale(self):
@@ -188,7 +207,6 @@ class DebugTalk:
         cursor.close()
         db.close()
         return self.weightNum[0]
-
     # 选择所有数据的前几个以str输出
     def output_str(self, data_name, num):
         num=int(num)
@@ -216,7 +234,12 @@ class DebugTalk:
             output_data = all_data_list[:num]
         return output_data
 
-
+    #商城计算保证金
+    def bondAmount_Num(self):
+        price=self.read_extractyaml("actualPrice")
+        num=self.read_extractyaml("buyNumber")
+        payBondScale=self.read_extractyaml("payBondScale")
+        return float(price)*float(num)*float(payBondScale)/100
     # 写入config.yaml文件
     def write_ConfigYaml(self, key, value):
         if key:
